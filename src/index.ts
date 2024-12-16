@@ -1,6 +1,8 @@
 import express from "express"
 import cors from "cors";
 import dotenv from "dotenv"
+import userRouter from "./routes/user.routes";
+import { errorHandler } from "./utils/errorHandler.util";
 
 dotenv.config();
 
@@ -28,7 +30,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.json())
+app.use(express.json());
+
+app.use("/api/v1/users", userRouter);
+
+app.use(errorHandler);
 
 app.listen(PORT, ()=> {
     console.error(`Server is running on ${PORT}`)

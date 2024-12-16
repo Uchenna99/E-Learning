@@ -24,7 +24,7 @@ enum USER_ROLE {
 }
 
 enum Role {
-  USER_ROLE
+  USER
   ADMIN
   INSTRUCTOR
 }
