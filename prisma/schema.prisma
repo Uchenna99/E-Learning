@@ -14,7 +14,10 @@ datasource db {
 }
 
 
-enum USER_ROLE{
+
+
+
+enum USER_ROLE {
   ADMIN
   USER
   INSTRUCTOR

@@ -4,22 +4,23 @@ import { IsEmail, IsEnum, IsNotEmpty, IsOptional, Length } from "class-validator
 export class CreateUserDTO {
 @IsNotEmpty()
 @Length(2, 50)
-firstName!: String;
+firstName!: string;
 
 @IsNotEmpty()
 @Length(2, 50)
-lastName!: String;
+lastName!: string;
 
 @IsEmail()
-email!: String;
+email!: string;
 
 @IsNotEmpty()
 @Length(6, 20)
-password!: String;
+password!: string;
 
 @IsOptional()
 @IsNotEmpty()
 @IsEnum(Role)
-role?: Role;
+role!: Role;
+
 }
 
