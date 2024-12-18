@@ -46,7 +46,6 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   // Relations
-  courses   Course[]
   Enrollment Enrollment[]
 }
 
@@ -54,9 +53,9 @@ model User {
 model Course{
   id            Int         @id @default(autoincrement())
   title         String
-  description   String
-  instructor    User        @relation(fields: [instructorId], references: [id])
-  instructorId  Int
+  description   String?
+  price         Float
+  duration      Int
   enrollments   Enrollment[]
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt

@@ -1,6 +1,5 @@
 import express from "express";
 import { UserController } from "../controllers/user.controller";
-import { useContainer } from "class-validator";
 
 
 const userController = new UserController();
@@ -12,7 +11,7 @@ userRouter.get("/:id", userController.getUserById)
 
 userRouter.get("/", userController.getAllUsers)
 
-userRouter.put("/", )
+userRouter.patch("/:id", userController.updateUser)
 
 
 export default userRouter;
