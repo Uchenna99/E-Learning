@@ -24,4 +24,52 @@ export class UserController {
             next(error);
         }
     }
+
+
+    public getUserById = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void | any> => {
+        try {
+            const userId = parseInt(req.params.id);
+            const user = await this.userService.getUserById(userId);
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.status(200).json(user)
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    public getAllUsers = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> => {
+        try {
+            const users = await this.userService.getAllsers();
+            res.status(200).json(users);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    public updateUser = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> => {
+        try {
+            const userId = parseInt(req.params.id);
+            const userData = req.body as Partial<CreateUserDTO>;
+            const updatedUser = await this.userService.updateUser(userId, userData);
+            res.status(200).json(updatedUser);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
