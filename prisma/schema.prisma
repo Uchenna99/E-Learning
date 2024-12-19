@@ -13,10 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
-
-
 enum USER_ROLE {
   ADMIN
   USER
@@ -35,43 +31,37 @@ enum EnrollmentStatus {
   DROPPED
 }
 
-
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  firstName String?
-  lastName  String?
-  role      USER_ROLE @default(USER)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  password   String
+  firstName  String?
+  lastName   String?
+  role       USER_ROLE    @default(USER)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
   // Relations
   Enrollment Enrollment[]
 }
 
-
-model Course{
-  id            Int         @id @default(autoincrement())
-  title         String
-  description   String?
-  price         Float
-  duration      Int
-  enrollments   Enrollment[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+model Course {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String?
+  price       Float
+  duration    Int
+  enrollments Enrollment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
-
 
 model Enrollment {
-  id        Int       @id @default(autoincrement())
+  id        Int              @id @default(autoincrement())
   userId    Int
-  user      User      @relation(fields: [userId], references: [id])
-  course    Course    @relation(fields: [courseId], references: [id])
+  user      User             @relation(fields: [userId], references: [id])
+  course    Course           @relation(fields: [courseId], references: [id])
   courseId  Int
-  status    EnrollmentStatus  @default(ACTIVE)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  status    EnrollmentStatus @default(ACTIVE)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 }
-
-
-

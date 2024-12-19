@@ -7,11 +7,13 @@ const courseRouter = express.Router();
 
 courseRouter.post("/", courseController.createCourse);
 
-// courseRouter.get("/:id", userController.getUserById)
+courseRouter.get("/:id", courseController.getCourseById)
 
-// courseRouter.get("/", userController.getAllUsers)
+courseRouter.get("/", courseController.getAllCourses)
 
-// courseRouter.patch("/:id", userController.updateUser)
+courseRouter.patch("/:id", courseController.updateCourses)
+
+courseRouter.delete("/:id", courseController.deleteCourses)
 
 
 export default courseRouter;

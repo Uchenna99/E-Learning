@@ -27,17 +27,44 @@ export class CoursesServiceImpl implements CoursesService {
         })
         return course;
     }
-    getCourseById(id: number): Promise<Course | null> {
-        throw new Error("Method not implemented.");
+
+
+    async getCourseById(id: number): Promise<Course | null> {
+        const course = await db.course.findUnique({
+            where: { id }
+        });
+        if(!course) {
+            throw new CustomError(404, `Course with id: ${id} not found.`)
+        }
+        return course;
     }
-    getAllCourses(): Promise<Course[]> {
-        throw new Error("Method not implemented.");
+
+
+    async getAllCourses(): Promise<Course[]> {
+        return await db.course.findMany();
     }
-    updateCourse(id: number, data: Partial<createCourseDTO>): Promise<Course> {
-        throw new Error("Method not implemented.");
+
+
+    async updateCourse(id: number, data: Partial<createCourseDTO>): Promise<Course> {
+        const course = await db.course.findFirst({
+            where: { id }
+        });
+        if(!course) {
+            throw new CustomError(404, `course with id: ${id} not found`)
+        }
+
+        const updatedCourse = await db.course.update({
+            where: { id },
+            data
+        });
+        return updatedCourse;
     }
-    deleteCourse(id: number): Promise<void> {
-        throw new Error("Method not implemented.");
+
+    
+    async deleteCourse(id: number): Promise<void> {
+        await db.course.delete({
+            where: { id }
+        });
     }
 }
 
