@@ -82,7 +82,7 @@ export class UserController {
         try {
             const userId = parseInt(req.params.id);
             await this.userService.deleteUser(userId);
-            res.status(200).json({message: `Course with id: ${userId} has been deleted`})
+            res.status(200).json({message: `User with id: ${userId} has been deleted`})
         } catch (error) {
             next(error);
         }
