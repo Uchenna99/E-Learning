@@ -40,5 +40,5 @@ app.use("/api/v1/course", courseRouter);
 app.use(errorHandler);
 
 app.listen(PORT, ()=> {
-    console.error(`Server is running on ${PORT}`)
+    console.error(`Server is running on Port ${PORT}`)
 })

@@ -72,4 +72,19 @@ export class UserController {
             next(error);
         }
     }
+
+
+    public deleteUser = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void>=>{
+        try {
+            const userId = parseInt(req.params.id);
+            await this.userService.deleteUser(userId);
+            res.status(200).json({message: `Course with id: ${userId} has been deleted`})
+        } catch (error) {
+            next(error);
+        }
+    };
 }

@@ -17,10 +17,5 @@ email!: string;
 @Length(6, 20)
 password!: string;
 
-@IsOptional()
-@IsNotEmpty()
-@IsEnum(Role)
-role!: Role;
-
 }
 

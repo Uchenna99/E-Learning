@@ -24,7 +24,6 @@ export class UserServiceImpl implements UserService {
                 password: await hashPassowrd(data.password),
                 firstName: data.firstName,
                 lastName: data.lastName,
-                role: data.role
             },
         })
         return user;
@@ -62,8 +61,10 @@ export class UserServiceImpl implements UserService {
     }
 
 
-    deleteUser(id: number): Promise<void> {
-        throw new Error("Method not implemented.");
+    async deleteUser(id: number): Promise<void> {
+        await db.user.delete({
+            where: { id }
+        });
     }
     
 }

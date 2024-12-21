@@ -13,5 +13,7 @@ userRouter.get("/", userController.getAllUsers)
 
 userRouter.patch("/:id", userController.updateUser)
 
+userRouter.delete("/:id", userController.deleteUser)
+
 
 export default userRouter;

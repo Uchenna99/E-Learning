@@ -20,16 +20,16 @@
     "class-validator": "^0.14.1",
     "express-validator": "^7.2.0",
     "nodemon": "^3.1.9",
+    "prisma": "^6.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "@prisma/client": "^6.0.1",
+    "@prisma/client": "^6.1.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "nvm": "^0.0.4",
-    "prisma": "^6.0.1"
+    "nvm": "^0.0.4"
   }
 }
