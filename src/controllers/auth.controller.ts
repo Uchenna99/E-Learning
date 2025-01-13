@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { LoginDTO } from "../dtos/Login.dto";
+import { AuthServiceImpl } from "../service/impl/authServiceImpl";
 
 export class AuthController {
-    private authService: AuthServiceImpl();
+    private authService: AuthServiceImpl;
 
     constructor() {
         this.authService = new AuthServiceImpl();

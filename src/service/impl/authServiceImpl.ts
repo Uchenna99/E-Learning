@@ -1,10 +1,10 @@
-import { Jwt } from "jsonwebtoken"
 import dotenv from "dotenv"
 import { AuthService } from "../authService"
 import { LoginDTO } from "../../dtos/Login.dto"
 import { db } from "../../config/db"
 import { CustomError } from "../../utils/customError.error"
 import { comparePassword } from "../../utils/password.util"
+import jwt from "jsonwebtoken"
 
 dotenv.config()
 
@@ -37,13 +37,13 @@ export class AuthServiceImpl implements AuthService {
     }
 
     generateAccessToken( userId: number, name: string, role: string ): string {
-        return Jwt.sign({id: userId, name: role}, process.env.JWT_SECRET || '', 
+        return jwt.sign({id: userId, name: role}, process.env.JWT_SECRET || '', 
             { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN }
         )
     };
 
     generateRefreshToken( userId: number, name: string, role: string ): string {
-        return Jwt.sign({id: userId, name: role}, process.env.JWT_SECRET || '', 
+        return jwt.sign({id: userId, name: role}, process.env.JWT_SECRET || '', 
             { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN }
         )
     };

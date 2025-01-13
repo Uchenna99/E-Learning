@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import userRouter from "./routes/user.routes";
 import { errorHandler } from "./utils/errorHandler.util";
 import courseRouter from "./routes/course.routes";
+import authRouter from "./routes/auth.routes";
 
 dotenv.config();
 
@@ -36,6 +37,8 @@ app.use(express.json());
 app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/course", courseRouter);
+
+app.use("/api/v1/login", authRouter)
 
 app.use(errorHandler);
 
