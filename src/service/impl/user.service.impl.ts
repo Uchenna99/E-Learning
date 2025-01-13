@@ -3,7 +3,7 @@ import { db } from "../../config/db";
 import { CreateUserDTO } from "../../dtos/CreateUser.dto";
 import { UserService } from "../user-service";
 import { CustomError } from "../../utils/customError.error";
-import { hashPassowrd } from "../../utils/password.util";
+import { hashPassword } from "../../utils/password.util";
 
 
 export class UserServiceImpl implements UserService {
@@ -21,7 +21,7 @@ export class UserServiceImpl implements UserService {
         const user = await db.user.create({
             data: {
                 email: data.email,
-                password: await hashPassowrd(data.password),
+                password: await hashPassword(data.password),
                 firstName: data.firstName,
                 lastName: data.lastName,
             },
