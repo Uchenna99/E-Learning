@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { LoginDTO } from "../dtos/loginDTO";
+import { LoginDTO } from "../dtos/Login.dto";
 
 export class AuthController {
     private authService: AuthServiceImpl();
