@@ -4,9 +4,11 @@ import { CreateUserDTO } from "../../dtos/CreateUser.dto";
 import { UserService } from "../user-service";
 import { CustomError } from "../../utils/customError.error";
 import { hashPassword } from "../../utils/password.util";
+import { StatusCodes } from "http-status-codes";
 
 
 export class UserServiceImpl implements UserService {
+
     async createUser(data: CreateUserDTO): Promise<User> {
         const isUserExist = await db.user.findFirst({
             where: {
@@ -65,6 +67,18 @@ export class UserServiceImpl implements UserService {
         await db.user.delete({
             where: { id }
         });
+    }
+
+
+    async profile(id: number): Promise<Omit<User, "password">> {
+        const user = await db.user.findFirst({
+            where: { id },
+        })
+
+        if(!user) {
+            throw new CustomError(StatusCodes.NOT_FOUND, `User with id: ${id} not found`)
+        }
+        return user;
     }
     
 }

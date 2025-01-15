@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { UserServiceImpl } from "../service/impl/user.service.impl";
 import { CreateUserDTO } from "../dtos/CreateUser.dto";
-
+import { StatusCodes } from "http-status-codes";
+import { CustomRequest } from "../middleware/auth.middleware";
 
 
 export class UserController {
@@ -87,4 +88,24 @@ export class UserController {
             next(error);
         }
     };
+
+    public profile = async (
+        req: CustomRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void | any> =>{
+        try {
+            const id = req.userAuth;
+            const user = await this.userService.getUserById(Number(id));
+
+            res.status(StatusCodes.OK).json({
+                error: false,
+                message: 'User profile retrieved successfully',
+                data: user
+            });
+
+        } catch (error) {
+            next(error);
+        }
+    }
 }
