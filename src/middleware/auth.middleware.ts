@@ -23,7 +23,7 @@ export const authenticateUser = (
         
         const token = authHeader?.split(' ')[1];
 
-        jwt.verify(token, process.env.JWT_SECRET || '', (err, decode) =>{
+        jwt.verify(token, process.env.JWT_SECRET || '', (err, decoded) =>{
             if(err){
                 res.status(StatusCodes.FORBIDDEN).json({
                     message: 'Invalid or expired token'
@@ -31,7 +31,7 @@ export const authenticateUser = (
                 return;
             }
 
-            const payload = decode as JwtPayload;
+            const payload = decoded as JwtPayload;
             req.userAuth = payload.id;
             next()
         });

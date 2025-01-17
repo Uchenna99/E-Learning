@@ -1,6 +1,7 @@
 import express from "express";
 import { UserController } from "../controllers/user.controller";
 import { authenticateUser } from "../middleware/auth.middleware";
+import IsAdmin from "../middleware/IsAdmin.middleware";
 
 
 const userController = new UserController();
@@ -10,7 +11,7 @@ userRouter.post("/", userController.createUser);
 
 userRouter.get("/:id", authenticateUser, userController.getUserById)
 
-userRouter.get("/", authenticateUser, userController.getAllUsers)
+userRouter.get("/", authenticateUser, IsAdmin, userController.getAllUsers)
 
 userRouter.patch("/:id", authenticateUser, userController.updateUser)
 
