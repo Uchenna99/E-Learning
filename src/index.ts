@@ -5,6 +5,9 @@ import userRouter from "./routes/user.routes";
 import { errorHandler } from "./utils/errorHandler.util";
 import courseRouter from "./routes/course.routes";
 import authRouter from "./routes/auth.routes";
+import { generateOtp } from "./utils/otp.util";
+
+
 
 dotenv.config();
 

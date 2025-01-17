@@ -47,5 +47,9 @@ export class AuthServiceImpl implements AuthService {
             { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN }
         )
     };
+
+    generateOtpExpiration() {
+        return new Date(Date.now() + 10 * 60 * 1000);
+    }
     
 }
