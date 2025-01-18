@@ -37,13 +37,13 @@ export class AuthServiceImpl implements AuthService {
     }
 
     generateAccessToken( userId: number, name: string, role: string ): string {
-        return jwt.sign({id: userId, name: role}, process.env.JWT_SECRET || '', 
+        return jwt.sign({id: userId, name: name, role: role}, process.env.JWT_SECRET || '', 
             { expiresIn: process.env.JWT_ACCESS_EXPIRES_IN }
         )
     };
 
     generateRefreshToken( userId: number, name: string, role: string ): string {
-        return jwt.sign({id: userId, name: role}, process.env.JWT_SECRET || '', 
+        return jwt.sign({id: userId, name: name, role: role}, process.env.JWT_SECRET || '', 
             { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN }
         )
     };
