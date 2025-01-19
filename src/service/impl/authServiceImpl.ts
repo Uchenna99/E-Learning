@@ -6,7 +6,7 @@ import { CustomError } from "../../utils/customError.error"
 import { comparePassword } from "../../utils/password.util"
 import jwt from "jsonwebtoken"
 
-dotenv.config()
+dotenv.config();
 
 export class AuthServiceImpl implements AuthService {
     async login(data: LoginDTO): Promise<{ accessToken: string; refreshToken: string }> {

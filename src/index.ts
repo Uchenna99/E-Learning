@@ -5,6 +5,9 @@ import userRouter from "./routes/user.routes";
 import { errorHandler } from "./utils/errorHandler.util";
 import courseRouter from "./routes/course.routes";
 import authRouter from "./routes/auth.routes";
+import cookieSession = require("cookie-session");
+import { Passport } from "passport";
+import passport = require("passport");
 
 
 
@@ -46,4 +49,15 @@ app.use(errorHandler);
 
 app.listen(PORT, ()=> {
     console.log(`Server is running on Port ${PORT}`)
-})
+});
+
+
+
+app.use(cookieSession({
+    name: 'session',
+    keys: ['class'],
+    maxAge: 24 * 60 * 60 * 100
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
