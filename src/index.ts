@@ -5,9 +5,8 @@ import userRouter from "./routes/user.routes";
 import { errorHandler } from "./utils/errorHandler.util";
 import courseRouter from "./routes/course.routes";
 import authRouter from "./routes/auth.routes";
+import passport from "./middleware/Passport"
 import cookieSession = require("cookie-session");
-import { Passport } from "passport";
-import passport = require("passport");
 
 
 
@@ -61,3 +60,7 @@ app.use(cookieSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use('/auth', authRouter)
+
+
