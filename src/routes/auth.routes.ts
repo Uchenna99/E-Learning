@@ -7,6 +7,11 @@ const authRouter = express.Router();
 
 authRouter.post("/", authController.login)
 
+
 authRouter.get('/google', passport.authenticate('google', {scope: ['profile']}))
+
+authRouter.get('/google/callback', passport.authenticate('google', {
+    successRedirect: 'http://localhost:5173'
+}))
 
 export default authRouter;
