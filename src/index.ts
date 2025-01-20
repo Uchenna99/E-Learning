@@ -5,8 +5,8 @@ import userRouter from "./routes/user.routes";
 import { errorHandler } from "./utils/errorHandler.util";
 import courseRouter from "./routes/course.routes";
 import authRouter from "./routes/auth.routes";
-import passport from "./middleware/Passport"
-import cookieSession = require("cookie-session");
+import passport from "passport";
+import googleRouter from "./routes/googleAuth.routes";
 
 
 
@@ -32,6 +32,8 @@ const corsOptions = {
     allowedHeaders: "*",
     methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
 }
+app.use(passport.initialize());
+
 
 
 app.use(cors(corsOptions));
@@ -42,7 +44,10 @@ app.use("/api/v1/users", userRouter);
 
 app.use("/api/v1/course", courseRouter);
 
-app.use("/api/v1/login", authRouter)
+app.use("/api/v1/login", authRouter);
+
+app.use("/auth", googleRouter);
+
 
 app.use(errorHandler);
 
@@ -52,15 +57,27 @@ app.listen(PORT, ()=> {
 
 
 
-app.use(cookieSession({
-    name: 'session',
-    keys: ['class'],
-    maxAge: 24 * 60 * 60 * 100
-}));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
-app.use('/auth', authRouter)
+
+
+// app.use(cookieSession({
+//     name: 'session',
+//     keys: ['class'],
+//     maxAge: 24 * 60 * 60 * 100,
+//     // secret: 'lsfglgalkglhfglahgfl',
+// }));
+
+// app.use(
+//     session({
+//       secret: 'ihasd7aogldghsgkhajgds788887655', // Replace with a secure random string
+//       resave: false,
+//       saveUninitialized: true,
+//       cookie: { secure: false }, // Set `secure: true` in production if using HTTPS
+//     })
+//   );
+
+// app.use(passport.session());
+
 
 

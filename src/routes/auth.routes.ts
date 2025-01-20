@@ -1,25 +1,42 @@
+import { CreateUserDTO } from "dtos/CreateUser.dto";
 import { AuthController } from "../controllers/auth.controller";
 import express from "express"
 import passport from "passport";
-import { Request, Response, NextFunction } from "express";
+import { VerifyEmailDTO } from "dtos/VerifyEmail.dto";
+import { LoginDTO } from "dtos/Login.dto";
 
 const authController = new AuthController();
 const authRouter = express.Router();
 
 authRouter.post("/", authController.login)
 
+authRouter.post("/", validationMiddleware(LoginDTO), authController.login);
+
+authRouter.post(
+  "/sign-up",
+  validationMiddleware(CreateUserDTO),
+  authController.createUser
+);
+
+authRouter.post(
+  "/verify-email",
+  validationMiddleware(VerifyEmailDTO),
+  authController.verifyEmail
+);
 
 
-authRouter.get('login/success', authController.googleLoginSuccess)
-authRouter.get('login/failed', authController.googleLoginFail)
-authRouter.get('/logout', authController.logout)
-
-authRouter.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}))
 
 
-authRouter.get('/google/callback', passport.authenticate('google', {
-    successRedirect: 'http://localhost:5173',
-    failureRedirect: 'login/failed '
-}))
+
+
+
+
+// authRouter.get('/login/success', (res: Response, req:Request)=>{const user = req.user; res.status(200).json({user: user})})
+// authRouter.get('/login/failed', authController.googleLoginFail)
+// authRouter.get('/logout', authController.logout)
+
+
+
+
 
 export default authRouter;
