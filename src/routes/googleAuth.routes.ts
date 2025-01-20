@@ -51,7 +51,7 @@ const router = express.Router();
 
 router.get(
     '/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
+    passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'consent' })
 );
 
 router.get(
