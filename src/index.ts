@@ -5,8 +5,10 @@ import userRouter from "./routes/user.routes";
 import { errorHandler } from "./utils/errorHandler.util";
 import courseRouter from "./routes/course.routes";
 import authRouter from "./routes/auth.routes";
-import passport from "passport";
+import passport from "./config/Passport";
 import googleRouter from "./routes/googleAuth.routes";
+import router from './routes/googleAuth.routes';
+
 
 
 
@@ -32,7 +34,6 @@ const corsOptions = {
     allowedHeaders: "*",
     methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
 }
-app.use(passport.initialize());
 
 
 
@@ -46,7 +47,25 @@ app.use("/api/v1/course", courseRouter);
 
 app.use("/api/v1/login", authRouter);
 
-app.use("/auth", googleRouter);
+// app.use("/", googleRouter);
+
+
+
+
+
+
+
+// Initialize Passport
+app.use(passport.initialize());
+
+// Routes
+app.use('/auth', router);
+
+
+
+
+
+
 
 
 app.use(errorHandler);
@@ -56,6 +75,7 @@ app.listen(PORT, ()=> {
 });
 
 
+export default app;
 
 
 

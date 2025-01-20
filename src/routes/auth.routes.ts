@@ -10,21 +10,21 @@ const authRouter = express.Router();
 
 authRouter.post("/", authController.login)
 
-authRouter.post("/", validationMiddleware(LoginDTO), authController.login);
-
-authRouter.post(
-  "/sign-up",
-  validationMiddleware(CreateUserDTO),
-  authController.createUser
-);
-
-authRouter.post(
-  "/verify-email",
-  validationMiddleware(VerifyEmailDTO),
-  authController.verifyEmail
-);
 
 
+// authRouter.post("/", validationMiddleware(LoginDTO), authController.login);
+
+// authRouter.post(
+//   "/sign-up",
+//   validationMiddleware(CreateUserDTO),
+//   authController.createUser
+// );
+
+// authRouter.post(
+//   "/verify-email",
+//   validationMiddleware(VerifyEmailDTO),
+//   authController.verifyEmail
+// );
 
 
 
