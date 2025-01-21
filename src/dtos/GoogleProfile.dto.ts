@@ -1,34 +1,33 @@
 
-interface GoogleUser {
-    id: string;
-    displayName: string;
+export interface GoogleProfile {
+  id: string;
+  displayName: string;
 
-    name: {
-      familyName: string;
-      givenName: string;
-    };
+  name: {
+    familyName: string;
+    givenName: string;
+  };
 
-    emails: {
-      value: string;
-      verified: boolean;
-    }[];
+  emails: {
+    value: string;
+    verified: boolean;
+  }[];
 
-    photos: {
-      value: string;
-    }[];
+  photos: {
+    value: string;
+  }[];
 
-    provider: string;
-    _raw: string;
+  provider: string;
+  _raw: string;
 
-    _json: {
-      sub: string;
-      name: string;
-      given_name: string;
-      family_name: string;
-      picture: string;
-      email: string;
-      email_verified: boolean;
-    };
+  _json: {
+    sub: string;
+    name: string;
+    given_name: string;
+    family_name: string;
+    picture: string;
+    email: string;
+    email_verified: boolean;
+  };
 
 }
-  
