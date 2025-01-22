@@ -32,7 +32,7 @@ const corsOptions = {
     origin: "*",
     credentials: true,
     allowedHeaders: "*",
-    methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+    methods: "GET, HEAD, PUT, PATCH, POST, DELETE"
 }
 
 
@@ -47,22 +47,12 @@ app.use("/api/v1/course", courseRouter);
 
 app.use("/api/v1/login", authRouter);
 
-// app.use("/", googleRouter);
-
-
-
-
-
-
 
 // Initialize Passport
 app.use(passport.initialize());
 
 // Routes
 app.use('/auth', router);
-
-
-
 
 
 

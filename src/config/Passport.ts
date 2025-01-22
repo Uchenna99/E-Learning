@@ -1,8 +1,6 @@
-import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { db } from '../config/db';
-import express from "express"
 import dotenv from 'dotenv';
 import { GoogleProfile } from 'dtos/GoogleProfile.dto';
 import { hashPassword } from '../utils/password.util';
@@ -19,7 +17,7 @@ passport.use(
             callbackURL: 'http://localhost:3010/auth/google/callback',
         },
         async (accessToken, refreshToken, profile, done) => {
-            // Here, you can handle user creation or fetching
+            // Handle user creation or fetching
             const googleUser = profile as GoogleProfile;
 
             const findUser = await db.user.findUnique({
@@ -44,17 +42,17 @@ passport.use(
 );
 
 
-passport.serializeUser((user, done)=>{
-    done( null, user );
-})
+// passport.serializeUser((user, done)=>{
+//     done( null, user );
+// })
 
-passport.deserializeUser((user: GoogleProfile, done)=>{
-    db.user.findFirst({
-        where: { email: user._json.email }
-    }).then((user)=>{
-        done( null, user );
-    })
-})
+// passport.deserializeUser((user: GoogleProfile, done)=>{
+//     db.user.findFirst({
+//         where: { email: user._json.email }
+//     }).then((user)=>{
+//         done( null, user );
+//     })
+// })
 
 
 

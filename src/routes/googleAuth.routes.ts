@@ -1,74 +1,41 @@
-// import express, { Request, Response } from "express"
-// import passport from "passport";
-
-
-// const googleRouter = express.Router();
-
-
-// googleRouter.get('/auth/google',
-//   passport.authenticate('google', { scope: ['profile'] }));
-
-// googleRouter.get('/auth/google/callback', 
-//   passport.authenticate('google', { failureRedirect: '/login' }),
-//   function(req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect('http://localhost:5173');
-//   });
-
-
-
-// googleRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
-
-
-// // Callback route
-// googleRouter.get(
-//     '/google/callback',
-//     passport.authenticate('google', { session: false }), // No session
-//     (req: Request, res: Response) => {
-//       const user = req.user; // The user object passed by the Google strategy
-//       res.json({ message: 'Login successful', user });
-//     }
-//   );
-
-
-
-
-
-
-// export default googleRouter;
-
-
-
-
-
-
-
-import express from 'express';
+import express, { NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import passport from '../config/Passport';
+import { Request, Response } from 'express';
+import { User } from '@prisma/client';
 
 const router = express.Router();
 
 router.get(
     '/google',
-    passport.authenticate('google', { scope: ['profile', 'email'], prompt: 'consent' })
+    passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
 router.get(
     '/google/callback',
-    passport.authenticate('google', { session: false }),
-    (req, res) => {
-        const user = req.user as { id: string; email: string; displayName: string };
+    passport.authenticate('google', 
+        { session: false, failureRedirect:'http://localhost:5173'}),
+    (req: Request, res: Response) => {
+        res.header('Access-Control-Allow-Origin', '*')
+        const user = req.user as User;
 
         // Create a JWT token
-        const token = jwt.sign(user, process.env.JWT_SECRET!, {
+        const token = jwt.sign( {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            emailVerified: user.emailVerified,
+            role: user.role
+        } , process.env.JWT_SECRET as string, {
             expiresIn: '1h',
         });
 
-        // Respond with the token
-        res.json({ token });
+        res.status(200).json({token})
+      
     }
 );
+
+
 
 router.get('/logout', (req, res)=>{})
 
