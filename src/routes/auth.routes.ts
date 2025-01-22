@@ -10,6 +10,12 @@ const authRouter = express.Router();
 
 authRouter.post("/", authController.login)
 
+authRouter.post("/verify", authController.verifyEmail)
+
+authRouter.post("/", authController.createUser)
+
+authRouter.post("/google", authController.createUser)
+
 
 
 // authRouter.post("/", validationMiddleware(LoginDTO), authController.login);

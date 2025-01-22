@@ -20,6 +20,7 @@ export class AuthServiceImpl implements AuthService {
     verifyEmail(data: VerifyEmailDTO): Promise<User> {
         throw new Error("Method not implemented.")
     }
+
     async login(data: LoginDTO): Promise<{ accessToken: string; refreshToken: string }> {
         
         const isUserExist = await db.user.findUnique({
@@ -62,6 +63,36 @@ export class AuthServiceImpl implements AuthService {
     generateOtpExpiration() {
         return new Date(Date.now() + 10 * 60 * 1000);
     }
+
+
+    async googleLogin(data: CreateUserDTO): Promise<{ accessToken: string; refreshToken: string }> {
+        const findUser = await db.user.findUnique({
+            where: { email: data.email }
+        })
+        if(findUser){
+            const userLogin: LoginDTO = {email: findUser.email, password: findUser.password} 
+            const { accessToken, refreshToken } = await this.login(userLogin);
+            return {accessToken, refreshToken};
+        }else{
+            const newUser = await db.user.create({
+                data: {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    email: data.email,
+                    password: await hashPassword('12345678')
+                }
+            })
+            if(newUser){
+                const {accessToken, refreshToken} = await this.login({email:newUser.email, password:newUser.password})
+            }else{
+                throw new CustomError(401, 'Process failed')
+            }
+            // return {accessToken, refreshToken}
+            
+        }
+        return {accessToken, refreshToken}
+    }
+
 
 
     // async verifyEmail(data: VerifyEmailDTO): Promise<User> {
