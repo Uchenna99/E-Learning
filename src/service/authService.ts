@@ -9,4 +9,5 @@ export interface AuthService {
     createUser(data: CreateUserDTO): Promise<User>;
     verifyEmail(data: VerifyEmailDTO): Promise<User>;
     googleLogin(data: CreateUserDTO): Promise<{accessToken: string; refreshToken: string;}>;
+    assignRole(role: string, email: string): Promise<void>;
 }

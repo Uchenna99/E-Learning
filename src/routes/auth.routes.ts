@@ -10,11 +10,12 @@ const authRouter = express.Router();
 
 authRouter.post("/", authController.login)
 
-authRouter.post("/verify", authController.verifyEmail)
+authRouter.post("/google", authController.googleLogin)
 
-authRouter.post("/", authController.createUser)
+// authRouter.post("/verify", authController.verifyEmail)
 
-authRouter.post("/google", authController.createUser)
+// authRouter.post("/", authController.createUser)
+
 
 
 

@@ -6,7 +6,7 @@ import { CustomError } from "../../utils/customError.error"
 import { comparePassword, hashPassword } from "../../utils/password.util"
 import jwt from "jsonwebtoken"
 import { User } from "@prisma/client"
-import { CreateUserDTO } from "dtos/CreateUser.dto"
+import { CreateGoogleUserDTO, CreateUserDTO } from "dtos/CreateUser.dto"
 import { VerifyEmailDTO } from "dtos/VerifyEmail.dto"
 import { generateOtp } from "utils/otp.util"
 import { StatusCodes } from "http-status-codes"
@@ -65,33 +65,40 @@ export class AuthServiceImpl implements AuthService {
     }
 
 
-    async googleLogin(data: CreateUserDTO): Promise<{ accessToken: string; refreshToken: string }> {
+    async googleLogin(data: CreateGoogleUserDTO) {
         const findUser = await db.user.findUnique({
             where: { email: data.email }
         })
         if(findUser){
-            const userLogin: LoginDTO = {email: findUser.email, password: findUser.password} 
-            const { accessToken, refreshToken } = await this.login(userLogin);
+            const fullname = findUser.firstName + ' ' + findUser.lastName;
+            const accessToken = this.generateAccessToken(findUser.id, fullname, findUser.role);
+
+            const refreshToken = this.generateRefreshToken(findUser.id, fullname, findUser.role);
             return {accessToken, refreshToken};
         }else{
+            const hashedPassword = await hashPassword('12345678')
             const newUser = await db.user.create({
                 data: {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     email: data.email,
-                    password: await hashPassword('12345678')
+                    password: hashedPassword
                 }
             })
-            if(newUser){
-                const {accessToken, refreshToken} = await this.login({email:newUser.email, password:newUser.password})
-            }else{
-                throw new CustomError(401, 'Process failed')
-            }
-            // return {accessToken, refreshToken}
+                const fullname = newUser.firstName + ' ' + newUser.lastName;
+                const accessToken = this.generateAccessToken(newUser.id, fullname, newUser.role);
+
+                const refreshToken = this.generateRefreshToken(newUser.id, fullname, newUser.role);
+
+                return {accessToken, refreshToken};
             
         }
-        return {accessToken, refreshToken}
     }
+
+    assignRole(role: string, email:string): Promise<void> {
+        throw new Error("Method not implemented.")
+    }
+
 
 
 

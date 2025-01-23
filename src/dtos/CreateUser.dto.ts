@@ -19,3 +19,18 @@ password!: string;
 
 }
 
+
+export class CreateGoogleUserDTO {
+    @IsNotEmpty()
+    @Length(2, 50)
+    firstName!: string;
+    
+    @IsNotEmpty()
+    @Length(2, 50)
+    lastName!: string;
+    
+    @IsEmail()
+    email!: string;
+
+    }
+

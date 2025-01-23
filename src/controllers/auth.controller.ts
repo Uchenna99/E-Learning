@@ -22,6 +22,17 @@ export class AuthController {
         }
     }
 
+    public googleLogin =async (req: Request, res: Response, next: NextFunction)=>{
+        try {
+            // res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+            const data: CreateUserDTO = req.body;
+            const {accessToken, refreshToken} = await this.authService.googleLogin(data);
+            res.status(201).json({accessToken, refreshToken});
+        } catch (error) {
+            next(error);
+        }
+    }
+
 
     
     public createUser = async (
