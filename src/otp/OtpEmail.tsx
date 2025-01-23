@@ -42,8 +42,7 @@ const OtpEmail = ({ otp }:OtpEmailProps) => {
               textAlign: "center",
               margin: "20px 0",
               color: "#007BFF",
-            }}
-          >
+            }}>
             {otp}
           </Text>
           <Text
