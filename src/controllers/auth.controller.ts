@@ -52,23 +52,23 @@ export class AuthController {
     }
     };
     
-      public verifyEmail = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-      ): Promise<void> => {
-        try {
-          const data: VerifyEmailDTO = req.body;
-          const user = await this.authService.verifyEmail(data);
-          res.status(201).json({
-            error: false,
-            message: `You have successfully registered`,
-            data: user,
-          });
-        } catch (error) {
-          next(error);
-        }
-      };
+    public verifyEmail = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+    ): Promise<void> => {
+    try {
+        const data: VerifyEmailDTO = req.body;
+        const user = await this.authService.verifyEmail(data);
+        res.status(201).json({
+        error: false,
+        message: `You have successfully registered`,
+        data: user,
+        });
+    } catch (error) {
+        next(error);
+    }
+    };
 
 
 

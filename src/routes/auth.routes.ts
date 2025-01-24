@@ -12,9 +12,9 @@ authRouter.post("/", authController.login)
 
 authRouter.post("/google", authController.googleLogin)
 
-// authRouter.post("/verify", authController.verifyEmail)
+authRouter.post("/verify", authController.verifyEmail)
 
-// authRouter.post("/", authController.createUser)
+authRouter.post("/create", authController.createUser)
 
 
 
