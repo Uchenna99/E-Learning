@@ -46,6 +46,7 @@ export class AuthController {
         res.status(201).json({
         error: false,
         message: `Otp has been sent successfully to your email @ ${user.email}`,
+        user: user
         });
     } catch (error) {
         next(error);
@@ -62,8 +63,8 @@ export class AuthController {
         const user = await this.authService.verifyEmail(data);
         res.status(201).json({
         error: false,
-        message: `You have successfully registered`,
-        data: user,
+        message: `Email verified. You have registered successfully`,
+        user: user,
         });
     } catch (error) {
         next(error);

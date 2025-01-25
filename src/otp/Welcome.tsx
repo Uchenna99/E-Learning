@@ -95,4 +95,4 @@ const WelcomeEmail: React.FC<WelcomeEmailProps> = ({ name }) => {
 };
 
 
-export default WelcomeEmail;
+export default WelcomeEmail;

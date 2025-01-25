@@ -15,6 +15,7 @@ import { sendOtpEmail, welcomeEmail } from "../../otp/Email"
 dotenv.config();
 
 export class AuthServiceImpl implements AuthService {
+    
     async createUser(data: CreateUserDTO): Promise<User> {
         const otp = generateOtp();
         const hashedOtp = await hashPassword(otp)
@@ -152,9 +153,9 @@ export class AuthServiceImpl implements AuthService {
           throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid OTP");
         }
     
-        const isExpiredOtp = user.otpExpiry < new Date();
+        const isOtpExpired = user.otpExpiry < new Date();
     
-        if (isExpiredOtp) {
+        if (isOtpExpired) {
           throw new CustomError(StatusCodes.BAD_REQUEST, "OTP is expired");
         }
     
