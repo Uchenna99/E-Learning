@@ -11,8 +11,12 @@ import { VerifyEmailDTO } from "dtos/VerifyEmail.dto"
 import { generateOtp } from "../../utils/otp.util"
 import { StatusCodes } from "http-status-codes"
 import { sendOtpEmail, welcomeEmail } from "../../otp/Email"
+import { VerifySmsDTO } from "dtos/VerifySms.dto"
+import { Twilio } from "twilio"
 
 dotenv.config();
+const client = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
+
 
 export class AuthServiceImpl implements AuthService {
     
@@ -179,6 +183,28 @@ export class AuthServiceImpl implements AuthService {
     
         return userReg;
     };
+
+
+    async verifySms(data: VerifySmsDTO): Promise<void> {
+        const findUser = await db.user.findUnique({
+            where: {email: data.email}
+        })
+        if(!findUser){
+            throw new CustomError(StatusCodes.NOT_FOUND, 'sms verification not available for this user');
+        }
+        if(findUser.emailVerified){
+            throw new CustomError(StatusCodes.BAD_REQUEST, 'User is already verified')
+        }
+        
+        const otp = generateOtp();
+        client.messages.create({
+            body: `Your OTP verification code is ${otp}  Do not share this code with anyone`,
+            to: process.env.TWILIO_PHONE_NUMBER as string,
+            messagingServiceSid: process.env.TWILIO_MSG_SERVICE_SID
+        })
+
+    }
+
     
       
     // async createUser(data: CreateUserDTO): Promise<User> {
