@@ -4,6 +4,7 @@ import { AuthServiceImpl } from "../service/impl/authServiceImpl";
 import dotenv from "dotenv"
 import { CreateUserDTO } from "dtos/CreateUser.dto";
 import { VerifyEmailDTO } from "dtos/VerifyEmail.dto";
+import { VerifySmsDTO } from "dtos/VerifySms.dto";
 
 export class AuthController {
     private authService: AuthServiceImpl;
@@ -72,7 +73,16 @@ export class AuthController {
     };
 
 
-
+    public verifysms = async (req: Request, res: Response, next: NextFunction)=>{
+        try {
+            const data = req.body as VerifySmsDTO
+            this.authService.verifySms(data)
+            res.json({message: 'message sent'})
+    
+        } catch (error) {
+            next(error);
+        }
+    }
 
 
 

@@ -13,12 +13,18 @@ import { StatusCodes } from "http-status-codes"
 import { sendOtpEmail, welcomeEmail } from "../../otp/Email"
 import { VerifySmsDTO } from "dtos/VerifySms.dto"
 import { Twilio } from "twilio"
+import { request, RequestOptions } from 'https';
+import { Buffer } from 'buffer';
+
 
 dotenv.config();
 const client = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 
 
 export class AuthServiceImpl implements AuthService {
+    verifySms(data: VerifySmsDTO): Promise<any> {
+        throw new Error("Method not implemented.")
+    }
     
     async createUser(data: CreateUserDTO): Promise<User> {
         const otp = generateOtp();
@@ -185,25 +191,25 @@ export class AuthServiceImpl implements AuthService {
     };
 
 
-    async verifySms(data: VerifySmsDTO): Promise<void> {
-        const findUser = await db.user.findUnique({
-            where: {email: data.email}
-        })
-        if(!findUser){
-            throw new CustomError(StatusCodes.NOT_FOUND, 'sms verification not available for this user');
-        }
-        if(findUser.emailVerified){
-            throw new CustomError(StatusCodes.BAD_REQUEST, 'User is already verified')
-        }
-        
-        const otp = generateOtp();
-        client.messages.create({
-            body: `Your OTP verification code is ${otp}  Do not share this code with anyone`,
-            to: process.env.TWILIO_PHONE_NUMBER as string,
-            messagingServiceSid: process.env.TWILIO_MSG_SERVICE_SID
-        })
+    // async verifySms(data: VerifySmsDTO) {
+    //     const findUser = await db.user.findUnique({
+    //         where: {email: data.email}
+    //     })
+    //     if(!findUser){
+    //         throw new CustomError(StatusCodes.NOT_FOUND, 'sms verification not available for this user');
+    //     }
+    //     if(findUser.emailVerified){
+    //         throw new CustomError(StatusCodes.BAD_REQUEST, 'User is already verified')
+    //     }
 
-    }
+    //     const otp = generateOtp();
+    //     const sendMsg = client.messages.create({
+    //         body: `Your OTP verification code is ${otp}  Do not share this code with anyone`,
+    //         to: process.env.TWILIO_PHONE_NUMBER as string,
+    //         messagingServiceSid: 'VAc5858487030c36d69ec93890cd44592d'
+    //     })
+    //     return sendMsg
+    // }
 
     
       

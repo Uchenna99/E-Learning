@@ -11,5 +11,5 @@ export interface AuthService {
     verifyEmail(data: VerifyEmailDTO): Promise<User>;
     googleLogin(data: CreateUserDTO): Promise<{accessToken: string; refreshToken: string;}>;
     assignRole(role: string, email: string): Promise<void>;
-    verifySms(data: VerifySmsDTO):Promise<void>;
+    verifySms(data: VerifySmsDTO):Promise<any>;
 }
