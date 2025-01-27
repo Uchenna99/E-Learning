@@ -3,11 +3,36 @@ import { db } from "../../config/db";
 import { CreateUserDTO } from "../../dtos/CreateUser.dto";
 import { UserService } from "../user-service";
 import { CustomError } from "../../utils/customError.error";
-import { hashPassword } from "../../utils/password.util";
+import { comparePassword, hashPassword } from "../../utils/password.util";
 import { StatusCodes } from "http-status-codes";
+import { ChangePasswordDTO } from "dtos/ResetPassword.dto";
 
 
 export class UserServiceImpl implements UserService {
+
+    async setPassword(id: number, data: ChangePasswordDTO): Promise<void> {
+        
+        await db.$transaction(async (transaction)=>{
+            const user = await transaction.user.findUnique({
+                where: {id}
+            });
+            if (!user){
+                throw new CustomError(StatusCodes.NOT_FOUND, 'User not found');
+            }
+
+            const isPasswordValid = await comparePassword(data.oldPassword, user.password || '');
+            if (!isPasswordValid){
+                throw new CustomError(400, 'Current password is incorrect');
+            }
+
+            const previousPasswords = await transaction.passwordHistory.findMany({
+                where: {userId: id},
+                select: {passwordHash: true}
+            });
+
+            for (const history of previousPasswords){}
+        })
+    }
 
     async createUser(data: CreateUserDTO): Promise<User> {
         const isUserExist = await db.user.findFirst({
