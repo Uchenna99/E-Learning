@@ -30,7 +30,49 @@ export class UserServiceImpl implements UserService {
                 select: {passwordHash: true}
             });
 
-            for (const history of previousPasswords){}
+            for (const history of previousPasswords){
+                const isPreviouslyUsed = await comparePassword(data.newPassword, history.passwordHash);
+
+                if(isPreviouslyUsed){
+                    throw new CustomError(400, 'The new password has been used before. Please choose a different password')
+                }
+
+                // Save the current password to password history
+                if(user.password){
+                    await transaction.passwordHistory.create({
+                        data: {
+                            userId: user.id,
+                            passwordHash: user.password
+                        }
+                    })
+                }
+
+                // Hash the new password
+                const hashedPassword = await hashPassword(data.newPassword);
+
+                // Update the user's password
+                await transaction.user.update({
+                    where: {id},
+                    data: {password: hashedPassword}
+                });
+
+                const passwordHistoryCount = await transaction.passwordHistory.count({
+                    where: {userId: id},
+                });
+
+                if (passwordHistoryCount > 5){
+                    const oldestPassword = await transaction.passwordHistory.findFirst({
+                        where: {userId: id},
+                        orderBy: {createdAt: 'asc'}
+                    });
+
+                    if(oldestPassword){
+                        await transaction.passwordHistory.delete({
+                            where: {id: oldestPassword.id}
+                        })
+                    }
+                }
+            }
         })
     }
 

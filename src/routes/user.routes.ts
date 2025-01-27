@@ -19,6 +19,8 @@ userRouter.delete("/:id", authenticateUser, userController.deleteUser)
 
 userRouter.get('/auth/profile', authenticateUser, userController.profile)
 
+userRouter.get('/change-password', authenticateUser, userController.setPassword)
+
 
 
 
