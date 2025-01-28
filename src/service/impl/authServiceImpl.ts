@@ -13,8 +13,6 @@ import { StatusCodes } from "http-status-codes"
 import { sendOtpEmail, welcomeEmail } from "../../otp/Email"
 import { VerifySmsDTO } from "dtos/VerifySms.dto"
 import { Twilio } from "twilio"
-import { request, RequestOptions } from 'https';
-import { Buffer } from 'buffer';
 
 
 dotenv.config();
@@ -22,6 +20,12 @@ const client = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUT
 
 
 export class AuthServiceImpl implements AuthService {
+    async sendOtp(email: string): Promise<void> {
+        const otp = generateOtp();
+        const findUser = await db.user.findUnique({
+            where: {email: }
+        })
+    }
     verifySms(data: VerifySmsDTO): Promise<any> {
         throw new Error("Method not implemented.")
     }
