@@ -11,4 +11,16 @@ export class VerifyEmailDTO {
     @IsString()
     @Length(6, 6)
     otp!: string;
-  }
+}
+
+
+export class GetOtpDTO{
+  @IsString()
+  @IsNotEmpty()
+  otpType!: string;
+
+  @IsString()
+  @IsEmail()
+  @IsNotEmpty()
+  email!: string;
+}

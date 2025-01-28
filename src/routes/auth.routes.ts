@@ -14,9 +14,9 @@ authRouter.post("/google", authController.googleLogin)
 
 authRouter.post("/verify", authController.verifyEmail)
 
-authRouter.post("/create", authController.createUser)
-
 authRouter.post("/verify-twilio", authController.verifysms)
+
+authRouter.post("/verify-sendOtp", authController.sendOtp)
 
 
 

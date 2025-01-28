@@ -7,7 +7,7 @@ import { comparePassword, hashPassword } from "../../utils/password.util"
 import jwt from "jsonwebtoken"
 import { User } from "@prisma/client"
 import { CreateGoogleUserDTO, CreateUserDTO } from "dtos/CreateUser.dto"
-import { VerifyEmailDTO } from "dtos/VerifyEmail.dto"
+import { GetOtpDTO, VerifyEmailDTO } from "dtos/VerifyEmail.dto"
 import { generateOtp } from "../../utils/otp.util"
 import { StatusCodes } from "http-status-codes"
 import { sendOtpEmail, welcomeEmail } from "../../otp/Email"
@@ -20,46 +20,38 @@ const client = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUT
 
 
 export class AuthServiceImpl implements AuthService {
-    async sendOtp(email: string): Promise<void> {
+
+    async sendOtp(data: GetOtpDTO): Promise<void> {
         const otp = generateOtp();
+        const hashedOtp = await hashPassword(otp)
         const findUser = await db.user.findUnique({
-            where: {email: }
-        })
+            where: {email: data.email}
+        });
+        if(!findUser){
+            throw new CustomError(StatusCodes.NOT_FOUND, 'User not found')
+        }else{
+            if(data.otpType === 'email')
+            await sendOtpEmail({
+                to: data.email,
+                subject: "Verify your email",
+                otp: otp,
+            });
+            await db.user.update({
+                where: {email: data.email},
+                data: {
+                    otp: hashedOtp,
+                    otpExpiry: this.generateOtpExpiration()
+                }
+            })
+        }
     }
+
+
     verifySms(data: VerifySmsDTO): Promise<any> {
         throw new Error("Method not implemented.")
     }
+
     
-    async createUser(data: CreateUserDTO): Promise<User> {
-        const otp = generateOtp();
-        const hashedOtp = await hashPassword(otp)
-        const isUserExist = await db.user.findFirst({
-            where: {
-            email: data.email,
-            },
-        });
-
-        if (isUserExist) {
-            throw new CustomError(409, "oops email already taken");
-        }
-        const user = await db.user.create({
-            data: {
-                email: data.email,
-                password: await hashPassword(data.password),
-                firstName: data.firstName,
-                lastName: data.lastName,
-                otp: hashedOtp,
-                otpExpiry: this.generateOtpExpiration(),
-            },
-            });
-        await sendOtpEmail({
-            to: data.email,
-            subject: "Verify your email",
-            otp: otp,
-        });
-            return user;
-
-    }
 
     async login(data: LoginDTO): Promise<{ accessToken: string; refreshToken: string }> {
         

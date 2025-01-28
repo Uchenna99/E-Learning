@@ -3,7 +3,7 @@ import { LoginDTO } from "../dtos/Login.dto";
 import { AuthServiceImpl } from "../service/impl/authServiceImpl";
 import dotenv from "dotenv"
 import { CreateUserDTO } from "dtos/CreateUser.dto";
-import { VerifyEmailDTO } from "dtos/VerifyEmail.dto";
+import { GetOtpDTO, VerifyEmailDTO } from "dtos/VerifyEmail.dto";
 import { VerifySmsDTO } from "dtos/VerifySms.dto";
 
 export class AuthController {
@@ -36,53 +36,70 @@ export class AuthController {
 
 
     
-    public createUser = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-    ): Promise<void> => {
-    try {
-        const data: CreateUserDTO = req.body;
-        const user = await this.authService.createUser(data);
-        res.status(201).json({
-        error: false,
-        message: `Otp has been sent successfully to your email @ ${user.email}`,
-        user: user
-        });
-    } catch (error) {
-        next(error);
-    }
+    public sendOtp = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void>=>{
+        try {
+            const data: GetOtpDTO = req.body;
+            await this.authService.sendOtp(data)
+            res.status(200).json({message: 'Your OTP has been sent'});
+        } catch (error) {
+            next(error);
+        }
     };
     
+    
     public verifyEmail = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
+        req: Request,
+        res: Response,
+        next: NextFunction
     ): Promise<void> => {
-    try {
-        const data: VerifyEmailDTO = req.body;
-        const user = await this.authService.verifyEmail(data);
-        res.status(201).json({
-        error: false,
-        message: `Email verified. You have registered successfully`,
-        user: user,
-        });
-    } catch (error) {
-        next(error);
-    }
+        try {
+            const data: VerifyEmailDTO = req.body;
+            const user = await this.authService.verifyEmail(data);
+            res.status(201).json({
+                error: false,
+                message: `Email verified. You have registered successfully`,
+                user: user,
+            });
+        } catch (error) {
+            next(error);
+        }
     };
-
-
+    
+    
     public verifysms = async (req: Request, res: Response, next: NextFunction)=>{
         try {
             const data = req.body as VerifySmsDTO
             this.authService.verifySms(data)
             res.json({message: 'message sent'})
-    
+            
         } catch (error) {
             next(error);
         }
     }
-
-
+    
+    
 }
+
+
+
+// public createUser = async (
+// req: Request,
+// res: Response,
+// next: NextFunction
+// ): Promise<void> => {
+// try {
+//     const data: CreateUserDTO = req.body;
+//     const user = await this.authService.createUser(data);
+//     res.status(201).json({
+//     error: false,
+//     message: `Otp has been sent successfully to your email @ ${user.email}`,
+//     user: user
+//     });
+// } catch (error) {
+//     next(error);
+// }
+// };
