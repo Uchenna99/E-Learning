@@ -41,6 +41,8 @@ model User {
   otp             String?
   otpExpiry       DateTime?
   phoneNumber     String?
+  profilePicture  String?
+  googleId        String?
   role            USER_ROLE         @default(USER)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
