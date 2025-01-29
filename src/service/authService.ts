@@ -12,4 +12,5 @@ export interface AuthService {
     assignRole(role: string, email: string): Promise<void>;
     verifySms(data: VerifySmsDTO):Promise<any>;
     sendOtp(data: GetOtpDTO): Promise<void>;
+    verifyOtp(data: VerifyEmailDTO): Promise<void>;
 }

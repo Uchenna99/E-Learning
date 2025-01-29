@@ -5,6 +5,7 @@ import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 export class VerifyEmailDTO {
     @IsString()
     @IsEmail()
+    @IsNotEmpty()
     email!: string;
 
     @IsNotEmpty()

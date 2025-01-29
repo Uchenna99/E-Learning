@@ -49,6 +49,21 @@ export class AuthController {
             next(error);
         }
     };
+
+
+    public verifyOtp = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void>=>{
+        try {
+        const data: VerifyEmailDTO = req.body
+        await this.authService.verifyOtp(data);
+        res.status(200).json({message: 'Verified'})
+        } catch (error) {
+            
+        }
+    };
     
     
     public verifyEmail = async (

@@ -21,6 +21,48 @@ const client = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUT
 
 export class AuthServiceImpl implements AuthService {
 
+    async verifyOtp(data: VerifyEmailDTO): Promise<void> {
+        const user = await db.user.findFirst({
+            where: {
+              email: data.email,
+            },
+          });
+      
+          if (!user) {
+            throw new CustomError(StatusCodes.NOT_FOUND, "Email not found");
+          }
+          if (!user.emailVerified) {
+            throw new CustomError(StatusCodes.BAD_REQUEST, "Please verify your account in the verification section first");
+          }
+          if (!user.otp || !user.otpExpiry) {
+            throw new CustomError(
+              StatusCodes.BAD_REQUEST,
+              "OTP is not available for this user"
+            );
+          }
+      
+          const isOtPValid = await comparePassword(data.otp, user.otp);
+          if (!isOtPValid) {
+            throw new CustomError(StatusCodes.BAD_REQUEST, "Invalid OTP");
+          }
+      
+          const isOtpExpired = user.otpExpiry < new Date();
+      
+          if (isOtpExpired) {
+            throw new CustomError(StatusCodes.BAD_REQUEST, "OTP is expired");
+          }
+      
+          const userReg = await db.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              otp: null,
+              otpExpiry: null,
+            },
+          });
+    }
+
     async sendOtp(data: GetOtpDTO): Promise<void> {
         const otp = generateOtp();
         const hashedOtp = await hashPassword(otp)
@@ -175,7 +217,6 @@ export class AuthServiceImpl implements AuthService {
             otpExpiry: null,
           },
         });
-        //
     
         await welcomeEmail({
           to: userReg.email,
