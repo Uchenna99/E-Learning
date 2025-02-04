@@ -6,8 +6,9 @@ import { errorHandler } from "./utils/errorHandler.util";
 import courseRouter from "./routes/course.routes";
 import authRouter from "./routes/auth.routes";
 import passport from "./config/Passport";
-import googleRouter from "./routes/googleAuth.routes";
 import router from './routes/googleAuth.routes';
+import stateRouter from "./routes/state.routes";
+
 
 
 
@@ -47,14 +48,14 @@ app.use("/api/v1/course", courseRouter);
 
 app.use("/api/v1/login", authRouter);
 
+app.use('/api/v1/states', stateRouter)
+
 
 // Initialize Passport
 app.use(passport.initialize());
 
 // Routes
 app.use('/auth', router);
-
-
 
 
 

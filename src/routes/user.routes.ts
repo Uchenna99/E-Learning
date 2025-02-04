@@ -21,6 +21,8 @@ userRouter.get('/auth/profile', authenticateUser, userController.profile)
 
 userRouter.get('/change-password', authenticateUser, userController.setPassword)
 
+userRouter.get('/fetch-states', authenticateUser, userController.getAllStates)
+
 
 
 

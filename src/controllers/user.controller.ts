@@ -128,4 +128,18 @@ export class UserController {
             next(error);
         }
     };
+
+    public getAllStates = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<void>=>{
+        try {
+            const allStates = await this.userService.getStates();
+            res.status(200).json(allStates);
+            
+        } catch (error) {
+            next(error);
+        }
+    };
 }

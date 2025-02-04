@@ -2,10 +2,16 @@
   "name": "e_learning",
   "version": "1.0.0",
   "main": "index.js",
+  "prisma": {
+    "seed": "ts-node --require esbuild-register src/seeds/seed.ts"
+  },
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "generate": "npx prisma generate",
+    "deploy": "npx generate && npx build",
+    "migrate": "npx prisma migrate deploy && node dist/seeds/seed.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +30,7 @@
     "@types/react": "^19.0.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "esbuild-register": "^3.6.0",
     "express-validator": "^7.2.0",
     "nodemon": "^3.1.9",
     "prisma": "^6.1.0",

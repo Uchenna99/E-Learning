@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { State, User } from "@prisma/client";
 import { CreateUserDTO } from "../dtos/CreateUser.dto";
 import { ChangePasswordDTO } from "dtos/ResetPassword.dto";
 

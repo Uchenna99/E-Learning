@@ -48,5 +48,5 @@ export async function welcomeEmail({ to, subject, name }: WelcomeEmailOptions) {
     to,
     subject,
     html: emailHtml,
-  });
+  });
 }

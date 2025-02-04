@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { State, User } from "@prisma/client";
 import { db } from "../../config/db";
 import { CreateUserDTO } from "../../dtos/CreateUser.dto";
 import { UserService } from "../user-service";
@@ -9,6 +9,10 @@ import { ChangePasswordDTO } from "dtos/ResetPassword.dto";
 
 
 export class UserServiceImpl implements UserService {
+    async getStates(): Promise<State[]> {
+        const allStates = await db.state.findMany({});
+        return allStates;
+    }
 
     async setPassword(id: number, data: ChangePasswordDTO): Promise<void> {
         
