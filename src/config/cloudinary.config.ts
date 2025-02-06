@@ -35,7 +35,7 @@ const uploadProfileImage = multer({
   fileFilter: (
     req: Request,
     file: Express.Multer.File,
-    cb: (error: Error | null, acceptFile: boolean) => void
+    cb: (error: any , acceptFile: boolean) => void
   ) => {
     const allowedImageTypes = /image\/(jpeg|png|jpg)/;
 
