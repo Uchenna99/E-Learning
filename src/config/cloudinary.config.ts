@@ -22,7 +22,7 @@ const profileImageStorage = new CloudinaryStorage({
 
     return {
       folder: "elearning", // Cloudinary folder for profile images
-      public_id: ${fileName}-${timestamp},
+      public_id: `${fileName}-${timestamp}`,
       resource_type: "image", // Enforce image type uploads
     };
   },
