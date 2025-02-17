@@ -8,6 +8,7 @@ import authRouter from "./routes/auth.routes";
 import passport from "./config/Passport";
 import router from './routes/googleAuth.routes';
 import stateRouter from "./routes/state.routes";
+import enrollmentRouter from "./routes/enrollment.routes";
 
 
 
@@ -48,7 +49,9 @@ app.use("/api/v1/course", courseRouter);
 
 app.use("/api/v1/login", authRouter);
 
-app.use('/api/v1/states', stateRouter)
+app.use('/api/v1/states', stateRouter);
+
+app.use("/api/v1/enrollments", enrollmentRouter)
 
 
 // Initialize Passport

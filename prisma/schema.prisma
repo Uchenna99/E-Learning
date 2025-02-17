@@ -32,23 +32,24 @@ enum EnrollmentStatus {
 }
 
 model User {
-  id              Int               @id @default(autoincrement())
-  email           String            @unique
-  password        String
-  firstName       String?
-  lastName        String?
-  emailVerified   Boolean           @default(false)
-  otp             String?
-  otpExpiry       DateTime?
-  phoneNumber     String?
-  profilePicture  String?
-  googleId        String?
-  role            USER_ROLE         @default(USER)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
+  id                    Int               @id @default(autoincrement())
+  email                 String            @unique
+  password              String
+  firstName             String?
+  lastName              String?
+  emailVerified         Boolean           @default(false)
+  otp                   String?
+  otpExpiry             DateTime?
+  phoneNumber           String?
+  profilePicture        String?
+  googleId              String?
+  role                  USER_ROLE         @default(USER)
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
   // Relations
-  Enrollment      Enrollment[]
-  passwordHistory PasswordHistory[]
+  Enrollment            Enrollment[]
+  instructorEnrollments Enrollment[]      @relation("InstructorEnrollments")
+  passwordHistory       PasswordHistory[]
 }
 
 model Course {
@@ -63,14 +64,18 @@ model Course {
 }
 
 model Enrollment {
-  id        Int              @id @default(autoincrement())
-  userId    Int
-  user      User             @relation(fields: [userId], references: [id])
-  course    Course           @relation(fields: [courseId], references: [id])
-  courseId  Int
-  status    EnrollmentStatus @default(ACTIVE)
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  id                Int              @id @default(autoincrement())
+  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId            Int
+  course            Course           @relation(fields: [courseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  courseId          Int
+  instructor        User?            @relation("InstructorEnrollments", fields: [instructorId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  instructorId      Int?
+  status            EnrollmentStatus @default(ACTIVE)
+  paymentStatus     PaymentStatus    @default(PENDING)
+  paystackReference String?          @unique
+  createdAt         DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime         @updatedAt
 }
 
 model PasswordHistory {
@@ -93,4 +98,10 @@ model LGA {
   name    String
   state   State  @relation(fields: [stateId], references: [id])
   stateId Int
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
 }
