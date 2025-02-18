@@ -8,9 +8,7 @@ import { PaymentServiceImpl } from "./paystackInitalization";
 export class EnrollmentServiceImpl implements EnrollmentService {
   private paymentService = new PaymentServiceImpl();
 
-  async initiateEnrollment(
-    data: InitiateEnrollmentDTO
-  ): Promise<{ enrollment: Enrollment; paymentLink: string }> {
+  async initiateEnrollment(data: InitiateEnrollmentDTO): Promise<{ enrollment: Enrollment; paymentLink: string }> {
     //Validate the course exists
     const course = await db.course.findUnique({
       where: { id: data.courseId },

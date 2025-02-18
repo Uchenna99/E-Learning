@@ -51,7 +51,7 @@ app.use("/api/v1/login", authRouter);
 
 app.use('/api/v1/states', stateRouter);
 
-app.use("/api/v1/enrollments", enrollmentRouter)
+app.use("/api/v1/enrollments", enrollmentRouter);
 
 
 // Initialize Passport
